@@ -29,17 +29,17 @@ module "redis" {
 }
 
 module "keyvault" {
-  source                  = "./modules/keyvault"
-  name                    = local.keyvault_name
-  location                = var.location
-  resource_group          = azurerm_resource_group.rg.name
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  sku                     = "standard"
-  tags                    = var.tags
-  redis_hostname          = module.redis.hostname
-  redis_primary_key       = module.redis.primary_key
-  redis_host_secret_name  = "redis-hostname"
-  redis_key_secret_name   = "redis-primary-key"
+  source                 = "./modules/keyvault"
+  name                   = local.keyvault_name
+  location               = var.location
+  resource_group         = azurerm_resource_group.rg.name
+  tenant_id              = data.azurerm_client_config.current.tenant_id
+  sku                    = "standard"
+  tags                   = var.tags
+  redis_hostname         = module.redis.hostname
+  redis_primary_key      = module.redis.primary_key
+  redis_host_secret_name = "redis-hostname"
+  redis_key_secret_name  = "redis-primary-key"
 }
 
 module "aks" {
@@ -62,11 +62,11 @@ provider "kubectl" {
 
 resource "kubectl_manifest" "secret_provider" {
   yaml_body = templatefile("${path.module}/k8s-manifests/secret-provider.yaml.tftpl", {
-    aks_kv_access_identity_id   = module.aks.id
-    kv_name                     = local.keyvault_name
-    redis_url_secret_name       = "redis-hostname"
-    redis_password_secret_name  = "redis-primary-key"
-    tenant_id                   = data.azurerm_client_config.current.tenant_id
+    aks_kv_access_identity_id  = module.aks.id
+    kv_name                    = local.keyvault_name
+    redis_url_secret_name      = "redis-hostname"
+    redis_password_secret_name = "redis-primary-key"
+    tenant_id                  = data.azurerm_client_config.current.tenant_id
   })
 }
 

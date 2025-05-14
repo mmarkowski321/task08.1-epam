@@ -1,12 +1,12 @@
 resource "azurerm_key_vault" "kv" {
-  name                       = var.name
-  location                   = var.location
-  resource_group_name        = var.resource_group
-  tenant_id                  = var.tenant_id
-  sku_name                   = var.sku
-  purge_protection_enabled   = false
-  enable_rbac_authorization  = true
-  tags                       = var.tags
+  name                      = var.name
+  location                  = var.location
+  resource_group_name       = var.resource_group
+  tenant_id                 = var.tenant_id
+  sku_name                  = var.sku
+  purge_protection_enabled  = false
+  enable_rbac_authorization = true
+  tags                      = var.tags
 }
 
 resource "azurerm_key_vault_secret" "redis_hostname" {
