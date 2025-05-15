@@ -38,7 +38,7 @@ module "keyvault" {
   resource_group_name  = azurerm_resource_group.rg.name
   redis_host           = module.redis.hostname
   redis_key            = module.redis.primary_key
-  aks_kubelet_identity = module.aks.kubelet_identity.client_id
+  aks_kubelet_identity = module.aks.kubelet_identity.object_id
   tags                 = local.common_tags
 }
 
