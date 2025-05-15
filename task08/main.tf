@@ -57,9 +57,11 @@ module "aks" {
 
 
 provider "kubectl" {
-  config_path      = "${path.module}/kubeconfig_aks.yaml"
-  config_context   = null
-  load_config_file = false
+  host                   = module.aks.kube_config.host
+  client_certificate     = base64decode(module.aks.kube_config.client_certificate)
+  client_key             = base64decode(module.aks.kube_config.client_key)
+  cluster_ca_certificate = base64decode(module.aks.kube_config.cluster_ca_certificate)
+  load_config_file       = false
 }
 
 resource "kubectl_manifest" "secret_provider" {

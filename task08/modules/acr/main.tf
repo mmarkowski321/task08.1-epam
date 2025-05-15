@@ -18,9 +18,13 @@ resource "azurerm_container_registry_task" "build" {
 
   docker_step {
     dockerfile_path      = "application/Dockerfile"
-    context_path         = "https://github.com/mmarkowski321/task08.1-epam.git"
+    context_path         = var.git_repo_url
     context_access_token = var.git_pat
-    image_names          = ["${azurerm_container_registry.acr.login_server}/${var.image_repo_name}:latest"]
+    image_names = [
+      "${azurerm_container_registry.acr.login_server}/${var.image_repo_name}:latest"
+    ]
+    push_enabled  = true
+    cache_enabled = true
   }
 
   source_trigger {
@@ -29,7 +33,13 @@ resource "azurerm_container_registry_task" "build" {
     repository_url = var.git_repo_url
     branch         = var.git_repo_branch
     events         = ["commit"]
+
+    authentication {
+      token      = var.git_pat
+      token_type = "PAT"
+    }
   }
+
   tags = var.tags
 }
 
