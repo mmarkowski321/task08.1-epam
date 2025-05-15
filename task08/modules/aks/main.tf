@@ -33,11 +33,6 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
 }
 
-output "kubelet_identity" {
-  description = "The AKS Kubelet identity object"
-  value       = azurerm_kubernetes_cluster.aks.kubelet_identity[0]
-}
-
 output "kube_config" {
   description = "AKS kube_config block"
   value = {
