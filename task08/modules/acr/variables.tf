@@ -5,31 +5,42 @@ variable "name" {
 
 variable "location" {
   type        = string
-  description = "Azure region where the ACR will be deployed."
+  description = "Location for the ACR"
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   type        = string
-  description = "Name of the resource group for the ACR."
+  description = "Resource group name where ACR will be deployed"
 }
 
 variable "sku" {
   type        = string
-  description = "SKU of the ACR"
+  description = "SKU for ACR"
 }
 
-variable "image_name" {
+variable "git_repo_url" {
   type        = string
-  description = "Name of the Docker image to build and push"
+  description = "GitHub repo URL"
+}
+
+variable "git_repo_branch" {
+  type        = string
+  default     = "main"
+  description = "Branch name"
 }
 
 variable "git_pat" {
   type        = string
+  description = "GitHub PAT"
   sensitive   = true
-  description = "Personal Access Token used to access the private GitHub repository"
+}
+
+variable "image_repo_name" {
+  type        = string
+  description = "Docker image name"
 }
 
 variable "tags" {
   type        = map(string)
-  description = "Map of tags to apply to the ACR"
+  description = "Tags to apply"
 }

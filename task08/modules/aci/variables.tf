@@ -1,39 +1,49 @@
 variable "name" {
   type        = string
-  description = "Name of the Azure Container Instance"
-}
-
-variable "dns_label" {
-  type        = string
-  description = "DNS name label for the ACI"
+  description = "Container group name"
 }
 
 variable "location" {
   type        = string
-  description = "Azure region where the ACI will be deployed."
+  description = "Location"
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   type        = string
-  description = "Name of the resource group for the ACI."
+  description = "Resource group name"
+}
+
+variable "dns_name_label" {
+  type        = string
+  description = "DNS name label"
 }
 
 variable "image" {
   type        = string
-  description = "Container image name to run in the ACI"
+  description = "Docker image with full ACR path"
 }
 
-variable "redis_host" {
-  type        = string
-  description = "Redis host address to be passed as an environment variable."
+variable "cpu" {
+  type    = number
+  default = 1
 }
 
-variable "redis_key" {
+variable "memory" {
+  type    = number
+  default = 1.5
+}
+
+variable "redis_url" {
   type        = string
-  description = "Redis access key to be passed as a secure environment variable."
+  description = "Redis host (from Key Vault)"
+}
+
+variable "redis_pwd" {
+  type        = string
+  description = "Redis access key (from Key Vault)"
 }
 
 variable "tags" {
   type        = map(string)
-  description = "Map of tags to apply to the ACI."
+  description = "Tags"
 }

@@ -1,29 +1,45 @@
 variable "name" {
+  description = "Name of the AKS cluster"
   type        = string
-  description = "Name of the AKS cluster."
 }
 
 variable "location" {
+  description = "Azure region"
   type        = string
-  description = "Azure region where the AKS cluster will be deployed"
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
+  description = "Resource group name"
   type        = string
-  description = "Name of the resource group for the AKS cluster"
 }
 
 variable "node_count" {
+  description = "Number of nodes in the AKS cluster"
   type        = number
-  description = "Number of nodes in the default node pool"
 }
 
-variable "node_size" {
+variable "node_vm_size" {
+  description = "VM size for AKS nodes"
   type        = string
-  description = "VM size for the AKS node pool"
 }
 
 variable "tags" {
+  description = "Tags to apply to the AKS cluster"
   type        = map(string)
-  description = "Map of tags to apply to the AKS cluster."
+}
+
+variable "acr_id" {
+  description = "ACR ID for role assignment"
+  type        = string
+}
+
+variable "dns_prefix" {
+  description = "DNS prefix for the AKS cluster"
+  type        = string
+}
+
+variable "node_pool_name" {
+  description = "Name of the default node pool"
+  type        = string
+  default     = "system"
 }
