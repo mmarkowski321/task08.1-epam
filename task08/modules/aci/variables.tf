@@ -24,13 +24,15 @@ variable "image" {
 }
 
 variable "cpu" {
-  type    = number
-  default = 1
+  type        = number
+  default     = 1
+  description = "cpu"
 }
 
 variable "memory" {
-  type    = number
-  default = 1.5
+  type        = number
+  default     = 1.5
+  description = "memory"
 }
 
 variable "redis_url" {
