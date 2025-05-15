@@ -35,8 +35,10 @@ resource "azurerm_container_registry_task" "build" {
     events         = ["commit"]
 
     authentication {
-      token      = var.git_pat
-      token_type = "PAT"
+      token         = var.git_pat
+      token_type    = "PAT"
+      scope         = "repo"
+      refresh_token = null
     }
   }
 
