@@ -17,9 +17,6 @@ resource "azurerm_key_vault_access_policy" "current_user" {
   secret_permissions = [
     "Get", "List", "Set", "Delete", "Purge", "Recover", "Backup", "Restore"
   ]
-  key_permissions = [
-    "Get", "List", "Set", "Delete", "Purge", "Recover", "Backup", "Restore"
-  ]
 }
 
 resource "azurerm_key_vault_access_policy" "aks" {
@@ -29,9 +26,6 @@ resource "azurerm_key_vault_access_policy" "aks" {
 
   secret_permissions = [
     "Get", "List"
-  ]
-  key_permissions = [
-    "Get", "List", "Encrypt", "Decrypt"
   ]
 }
 
