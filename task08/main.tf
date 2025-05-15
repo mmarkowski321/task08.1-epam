@@ -38,7 +38,7 @@ module "keyvault" {
   resource_group_name  = azurerm_resource_group.rg.name
   redis_host           = module.redis.hostname
   redis_key            = module.redis.primary_key
-  aks_kubelet_identity = module.aks.kubelet_identity.object_id
+  aks_kubelet_identity = module.aks.kubelet_identity[0].object_id
   tags                 = local.common_tags
 }
 
@@ -64,7 +64,7 @@ provider "kubectl" {
 
 resource "kubectl_manifest" "secret_provider" {
   yaml_body = templatefile("${path.module}/k8s-manifests/secret-provider.yaml.tftpl", {
-    aks_kv_access_identity_id  = module.aks.kubelet_identity.client_id
+    aks_kv_access_identity_id  = module.aks.kubelet_identity[0].client_id
     kv_name                    = module.keyvault.vault_name
     redis_url_secret_name      = "redis-hostname"
     redis_password_secret_name = "redis-primary-key"
