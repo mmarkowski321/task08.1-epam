@@ -1,4 +1,4 @@
-name_prefix  = "cmtr-6bbc5609-mod8-rg"
+name_prefix  = "cmtr-6bbc5609-mod8"
 location     = "East US"
 git_repo_url = "https://github.com/mmarkowski321/task08.1-epam"
 git_branch   = "master"
