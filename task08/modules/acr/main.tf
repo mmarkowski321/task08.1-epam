@@ -1,50 +1,55 @@
 resource "azurerm_container_registry" "acr" {
-  name                = var.name
+  name                = var.acr_name
+  resource_group_name = var.rg_name
   location            = var.location
-  resource_group_name = var.resource_group_name
-  sku                 = var.sku
-  admin_enabled       = false
+  sku                 = var.acr_sku
+  admin_enabled       = true
   tags                = var.tags
 }
 
-resource "azurerm_container_registry_task" "build" {
-  name                  = "build-task"
+resource "azurerm_container_registry_task" "acr_task" {
+  name                  = "${var.docker_image_name}-task"
   container_registry_id = azurerm_container_registry.acr.id
-
   platform {
-    os           = "Linux"
-    architecture = "amd64"
-  }
-
-  docker_step {
-    dockerfile_path      = "application/Dockerfile"
-    context_path         = var.git_repo_url
-    context_access_token = var.git_pat
-    image_names = [
-      "${azurerm_container_registry.acr.login_server}/${var.image_repo_name}:latest"
-    ]
-    push_enabled  = true
-    cache_enabled = true
+    os = "Linux"
   }
 
   source_trigger {
-    name           = "github-trigger"
-    source_type    = "Github"
-    repository_url = var.git_repo_url
-    branch         = var.git_repo_branch
+    name           = "source-trigger"
     events         = ["commit"]
-
+    repository_url = var.git_repo_url
+    source_type    = "Github"
+    branch         = var.git_branch
     authentication {
-      token         = var.git_pat
-      token_type    = "PAT"
-      scope         = "repo"
-      refresh_token = null
+      token      = var.git_pat
+      token_type = "PAT"
     }
   }
 
-  tags = var.tags
+  docker_step {
+    dockerfile_path      = var.dockerfile_path
+    context_path         = var.docker_context_path
+    image_names          = ["${var.docker_image_name}:latest", "${var.docker_image_name}:{{.Run.ID}}"]
+    context_access_token = var.git_pat
+  }
+
+
+  lifecycle {
+    ignore_changes = [
+      source_trigger,
+      docker_step[0].context_access_token
+    ]
+  }
 }
 
 resource "azurerm_container_registry_task_schedule_run_now" "schedule_run" {
-  container_registry_task_id = azurerm_container_registry_task.build.id
+  container_registry_task_id = azurerm_container_registry_task.acr_task.id
+
+  timeouts {
+    create = "15m"
+  }
+
+  lifecycle {
+    ignore_changes = all
+  }
 }

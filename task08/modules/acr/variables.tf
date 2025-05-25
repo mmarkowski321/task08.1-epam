@@ -1,46 +1,60 @@
-variable "name" {
+variable "rg_name" {
   type        = string
-  description = "Name of the Azure Container Registry"
+  description = "Name of Resource group"
+
 }
 
 variable "location" {
+  description = "The location/region where the ACR is created"
   type        = string
-  description = "Location for the ACR"
 }
 
-variable "resource_group_name" {
+variable "acr_name" {
+  description = "The name of the ACR"
   type        = string
-  description = "Resource group name where ACR will be deployed"
 }
 
-variable "sku" {
+variable "acr_sku" {
+  description = "The SKU of the ACR"
   type        = string
-  description = "SKU for ACR"
-}
-
-variable "git_repo_url" {
-  type        = string
-  description = "GitHub repo URL"
-}
-
-variable "git_repo_branch" {
-  type        = string
-  default     = "main"
-  description = "Branch name"
-}
-
-variable "git_pat" {
-  type        = string
-  description = "GitHub PAT"
-  sensitive   = true
-}
-
-variable "image_repo_name" {
-  type        = string
-  description = "Docker image name"
 }
 
 variable "tags" {
   type        = map(string)
-  description = "Tags to apply"
+  description = "Creator tag"
+
+}
+
+variable "docker_image_name" {
+  description = "The name of the Docker image to build"
+  type        = string
+}
+
+variable "git_repo_url" {
+  description = "The URL of the Git repository containing the application source"
+  type        = string
+}
+
+variable "git_branch" {
+  description = "The branch of the Git repository to use"
+  type        = string
+  default     = "main"
+}
+
+variable "git_pat" {
+  description = "The Personal Access Token for the Git repository"
+  type        = string
+  sensitive   = true
+}
+
+variable "dockerfile_path" {
+  description = "The path to the Dockerfile in the Git repository"
+  type        = string
+  default     = "Dockerfile"
+}
+
+variable "docker_context_path" {
+  description = "The path to the Docker context in the Git repository"
+  type        = string
+  default     = "."
 }

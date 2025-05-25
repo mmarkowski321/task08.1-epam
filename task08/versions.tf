@@ -8,15 +8,35 @@ terraform {
     }
     kubectl = {
       source  = "alekc/kubectl"
-      version = ">= 1.14.0"
+      version = ">=2.0.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.25.0"
+      version = ">=2.0.0"
     }
   }
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy    = true
+      recover_soft_deleted_key_vaults = true
+    }
+  }
+}
+
+provider "kubectl" {
+  host                   = module.aks.aks_host
+  client_certificate     = base64decode(module.aks.aks_client_certificate)
+  client_key             = base64decode(module.aks.aks_client_key)
+  cluster_ca_certificate = base64decode(module.aks.aks_cluster_ca_certificate)
+  load_config_file       = false
+}
+
+provider "kubernetes" {
+  host                   = module.aks.aks_host
+  client_certificate     = base64decode(module.aks.aks_client_certificate)
+  client_key             = base64decode(module.aks.aks_client_key)
+  cluster_ca_certificate = base64decode(module.aks.aks_cluster_ca_certificate)
 }

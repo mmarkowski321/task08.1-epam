@@ -1,34 +1,37 @@
-variable "name" {
-  description = "Name of the Azure Key Vault"
+variable "rg_name" {
   type        = string
+  description = "Name of Resource group"
+
 }
 
 variable "location" {
-  description = "Azure location"
+  description = "The location/region where the Key Vault is created"
   type        = string
 }
 
-variable "resource_group_name" {
-  description = "Resource group where Key Vault is deployed"
+variable "keyvault_name" {
+  description = "The name of the Key Vault"
   type        = string
+}
+
+variable "sku_kv" {
+  description = "The SKU of the Key Vault"
+  type        = string
+  default     = "standard"
 }
 
 variable "tags" {
-  description = "Tags to apply"
   type        = map(string)
+  description = "Creator tag"
+
 }
 
-variable "redis_host" {
-  description = "Redis hostname to store as secret"
+variable "tenant_id" {
+  description = "The Azure Active Directory tenant ID to use for authenticating requests to Key Vault"
   type        = string
 }
 
-variable "redis_key" {
-  description = "Redis access key to store as secret"
-  type        = string
-}
-
-variable "aks_kubelet_identity" {
-  description = "AKS kubelet managed identity object ID"
+variable "current_user_object_id" {
+  description = "The object ID of the current user or service principal"
   type        = string
 }

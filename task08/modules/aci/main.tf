@@ -1,33 +1,38 @@
 resource "azurerm_container_group" "aci" {
-  name                = var.name
+  name                = var.aci_name
   location            = var.location
-  resource_group_name = var.resource_group_name
-  os_type             = "Linux"
+  resource_group_name = var.rg_name
   ip_address_type     = "Public"
-  dns_name_label      = var.dns_name_label
+  dns_name_label      = var.aci_name
+  os_type             = "Linux"
+  tags                = var.tags
 
   container {
-    name   = var.name
-    image  = var.image
-    cpu    = var.cpu
-    memory = var.memory
+    name   = "app"
+    image  = var.docker_image
+    cpu    = "1.0"
+    memory = "1.5"
 
     ports {
-      port     = 80
+      port     = 8080
       protocol = "TCP"
     }
 
     environment_variables = {
-      CREATOR        = "ACI"
-      REDIS_PORT     = "6380"
-      REDIS_SSL_MODE = "true"
+      "CREATOR"        = "ACI"
+      "REDIS_PORT"     = tostring(var.redis_port)
+      "REDIS_SSL_MODE" = "true"
     }
 
     secure_environment_variables = {
-      REDIS_URL = var.redis_url
-      REDIS_PWD = var.redis_pwd
+      "REDIS_URL" = var.redis_url
+      "REDIS_PWD" = var.redis_password
     }
   }
 
-  tags = var.tags
+  image_registry_credential {
+    server   = var.acr_login_server
+    username = var.acr_admin_username
+    password = var.acr_admin_password
+  }
 }
